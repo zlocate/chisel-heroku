@@ -1,38 +1,74 @@
-chisel-heroku
-=============
+# one-click-own-free-proxy
 
-Deploy [chisel](https://github.com/jpillora/chisel) to [Heroku](https://www.heroku.com/) as a [SOCKS5](https://en.wikipedia.org/wiki/SOCKS) proxy.
+Шаблон для запуска собственного SOCKS5 прокси yна базе [chisel](https://github.com/jpillora/chisel) с использованием [Render](https://render.com) (бесплатно) или [Heroku](https://www.heroku.com/).
 
-### Getting started
+## Начало работы
 
-Use this button [![Heroku Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/mrluanma/chisel-heroku)
+1. Установите клиент [chisel](https://github.com/jpillora/chisel) 
 
-Or create a Heroku app manually:
+2. Опубликуйте сервер
+
+Выберите один из вариантов деплоя ниже:
+
+<div>
+<a href="https://render.com/deploy?repo=https://github.com/zlocate/one-click-own-free-proxy">
+  <img src="https://render.com/images/deploy-to-render-button.svg" height="32" alt="Deploy to Render">
+</a>
+
+<a href="https://heroku.com/deploy">
+  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Heroku Deploy">
+</a>
+</div>
+
+При создании сервера /  серверов укажите значение переменной AUTH - в ней хранится секретный ключ для подключения к прокси
+ 
+Или создайте приложение вручную:
+
+<div><details>
+<summary>Heroku</summary>
+Для корректной работы скрипта необходим установленный render сli. 
+Не забудьте авторизоваться в cli перед выполнением команды
+
+
+```bash
+heroku create
+heroku stack:set container
+heroku config:set CHISEL_AUTH=user:pass
+git push heroku main
+```
+</details>
+</div>
+
+<div>
+<details>
+<summary>Render</summary>
+Для корректной работы скрипта необходим установленный render сli. 
+Не забудьте авторизоваться в cli перед выполнением команды
+  
+```bash
+render create
+render stack set --build-command "render build"
+render secret create CHISEL_AUTH --env user:pass
+git push render main
+```
+
+</details>
+</div>
+
+3. Подключитесь к  серверу
+
+Запустите клиент chisel и подключените к cерверу:
 
 ```
-$ heroku create
-$ heroku stack:set container
-$ heroku config:set CHISEL_AUTH=user:pass
-$ git push heroku main
-...
-remote: Verifying deploy... done.
-To https://git.heroku.com/shrouded-springs-35880.git
- * [new branch]      main -> main
+chisel --version
+chisel client --keepalive 10s --auth user:pass https://shrouded-springs-35880.herokuapp.com socks
 ```
 
-Connect your chisel client:
+Вместо https://shrouded-springs-35880.herokuapp.com укажите url отдеплоенного сервера
 
-```
-$ chisel --version
-1.7.6
-$ chisel client --keepalive 10s --auth user:pass https://shrouded-springs-35880.herokuapp.com socks
-...
-2019/02/05 02:16:33 client: Connected (Latency 263.548181ms)
+4. Проверьте работу прокси:
+```bash
+curl --socks5 127.0.0.1:1080 ifconfig.co
 ```
 
-Point your SOCKS5 clients to `127.0.0.1:1080`
-
-```
-$ curl --socks5 127.0.0.1:1080 ifconfig.co
-54.80.138.214
-```
+5. Укажите `127.0.0.1:1080` в качестве SOCKS5 прокси в вышем приложении

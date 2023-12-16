@@ -1,45 +1,47 @@
 services:
   - type: web
-    name: chisel-oregon
+    name: chisel-frankfurt    
+    runtime: image
     image:
       url: docker.io/jpillora/chisel:1.9.1
-    dockerCommand: chisel server --socks5
-    region: oregon
-    plan: free
-    envVars:
-      - key: AUTH
-        value: "username:password"
-        sync: false
-  - type: web
-    name: chisel-frankfurt
-    image:
-      url: docker.io/jpillora/chisel:1.9.1
-    dockerCommand: chisel server --socks5
+    dockerCommand: /app/bin server --socks5 --reverse
     region: frankfurt
     plan: free
     envVars:
       - key: AUTH
-        value: "username:password"
         sync: false
+
+  # Закомментируйте  ниже для деплоя только одного сервера
   - type: web
-    name: chisel-server-ohio
+    name: chisel-oregon    
+    runtime: image
     image:
       url: docker.io/jpillora/chisel:1.9.1
-    dockerCommand: chisel server --socks5
+    dockerCommand: /app/bin server --socks5 --reverse
+    region: oregon
+    plan: free
+    envVars:
+      - key: AUTH
+        sync: false
+  - type: web
+    name: chisel-server-ohio    
+    runtime: image
+    image:
+      url: docker.io/jpillora/chisel:1.9.1
+    dockerCommand: /app/bin server --socks5 --reverse
     region: ohio
     plan: free
     envVars:
       - key: AUTH
-        value: "username:password"
         sync: false
   - type: web
-    name: chisel-singapore
+    name: chisel-singapore    
+    runtime: image
     image:
       url: docker.io/jpillora/chisel:1.9.1
-    dockerCommand: chisel server --socks5
+    dockerCommand: /app/bin server --socks5 --reverse
     region: singapore
     plan: free
     envVars:
       - key: AUTH
-        value: "username:password"
         sync: false
