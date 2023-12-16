@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: chisel-oregon
+    image:
+      url: docker.io/jpillora/chisel:1.9.1
+    dockerCommand: chisel server --socks5
+    region: oregon
+    plan: free
+    envVars:
+      - key: AUTH
+        value: "username:password"
+        sync: false
+  - type: web
+    name: chisel-frankfurt
+    image:
+      url: docker.io/jpillora/chisel:1.9.1
+    dockerCommand: chisel server --socks5
+    region: frankfurt
+    plan: free
+    envVars:
+      - key: AUTH
+        value: "username:password"
+        sync: false
+  - type: web
+    name: chisel-server-ohio
+    image:
+      url: docker.io/jpillora/chisel:1.9.1
+    dockerCommand: chisel server --socks5
+    region: ohio
+    plan: free
+    envVars:
+      - key: AUTH
+        value: "username:password"
+        sync: false
+  - type: web
+    name: chisel-singapore
+    image:
+      url: docker.io/jpillora/chisel:1.9.1
+    dockerCommand: chisel server --socks5
+    region: singapore
+    plan: free
+    envVars:
+      - key: AUTH
+        value: "username:password"
+        sync: false
