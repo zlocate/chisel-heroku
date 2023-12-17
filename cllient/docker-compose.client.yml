@@ -1,0 +1,41 @@
+version: '3'
+services:
+  chisel_fr:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    command: client --auth ${AUTH_FR} ${URL_FR} 0.0.0.0:1080:socks
+    ports:
+      - "1080:1080"
+    env_file:
+      - .env.client
+
+#  chisel_sg:
+#   build:
+#     context: .
+#     dockerfile: Dockerfile.client
+#    command: client --auth ${AUTH_SG} ${URL_SG} 0.0.0.0:1081:socks
+#    ports:
+#     - "1081:1081"
+#    env_file:
+#      - .env.client
+
+#  chisel_oh:
+#   build:
+#     context: .
+#     dockerfile: Dockerfile.client
+#    command: client --auth ${AUTH_OH} ${URL_OH} 0.0.0.0:1082:socks
+#    ports:
+#     - "1082:1082"
+#    env_file:
+#      - .env.client
+
+#  chisel_or:
+#   build:
+#    context: .
+#      dockerfile: Dockerfile.client
+#    command: client --auth ${AUTH_OR} ${URL_OR} 0.0.0.0:${1083}:socks
+#    ports:
+#     - "1083:1083"
+#    env_file:
+#      - .env.client

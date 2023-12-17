@@ -1,74 +1,39 @@
 # one-click-own-free-proxy
 
-Шаблон для запуска собственного SOCKS5 прокси yна базе [chisel](https://github.com/jpillora/chisel) с использованием [Render](https://render.com) (бесплатно) или [Heroku](https://www.heroku.com/).
+Шаблон для запуска бесплатного иностранного SOCKS5 прокси yна базе [chisel](https://github.com/jpillora/chisel) с использованием [Render](https://render.com)
+
 
 ## Начало работы
-
+0. Форкните этот репозиторий.
 1. Установите клиент [chisel](https://github.com/jpillora/chisel) 
+2. Опубликуйте сервер на Render.com
+Для этого: [зарегистрируйтесь](https://dashboard.render.com/register) в сервисе (поддерживается также авторизация через Github)
 
-2. Опубликуйте сервер
+3. Создайте новый [Blueprint проект](https://dashboard.render.com/select-repo?type=blueprint)
 
-Выберите один из вариантов деплоя ниже:
+В процессе сервис запросит вас выдать доступ к репозиториям Github
 
-<div>
-<a href="https://render.com/deploy?repo=https://github.com/zlocate/one-click-own-free-proxy">
-  <img src="https://render.com/images/deploy-to-render-button.svg" height="32" alt="Deploy to Render">
-</a>
+Достаточно выбрать ваш форк.
 
-<a href="https://heroku.com/deploy">
-  <img src="https://www.herokucdn.com/deploy/button.svg" alt="Heroku Deploy">
-</a>
-</div>
+В результате он должен появиться в списке репозиториев для подключения (Connect a repository). Нажмите коннект и заполните значение переменной `AUTH` в формате `логин:пароль`, например `user:password` и нажмите "Create New Resources".
 
-При создании сервера /  серверов укажите значение переменной AUTH - в ней хранится секретный ключ для подключения к прокси
- 
-Или создайте приложение вручную:
+Дождитесь создания сервера и скопируйте его url (вида https://something.onrender.com) 
 
-<div><details>
-<summary>Heroku</summary>
-Для корректной работы скрипта необходим установленный render сli. 
-Не забудьте авторизоваться в cli перед выполнением команды
-
-
-```bash
-heroku create
-heroku stack:set container
-heroku config:set CHISEL_AUTH=user:pass
-git push heroku main
+4. Подключитесь к  серверу (без docker)
 ```
-</details>
-</div>
-
-<div>
-<details>
-<summary>Render</summary>
-Для корректной работы скрипта необходим установленный render сli. 
-Не забудьте авторизоваться в cli перед выполнением команды
-  
-```bash
-render create
-render stack set --build-command "render build"
-render secret create CHISEL_AUTH --env user:pass
-git push render main
+chisel client --keepalive 10s --auth user:pass <ваш_url_здесь> socks
 ```
 
-</details>
-</div>
+Вместо https://shrouded-springs-35880.render.com укажите url отдеплоенного сервера
 
-3. Подключитесь к  серверу
+Вариант с Docker доступен в директории `client`. Обратите внимание на содержимое .env.client.example
 
-Запустите клиент chisel и подключените к cерверу:
-
-```
-chisel --version
-chisel client --keepalive 10s --auth user:pass https://shrouded-springs-35880.herokuapp.com socks
-```
-
-Вместо https://shrouded-springs-35880.herokuapp.com укажите url отдеплоенного сервера
 
 4. Проверьте работу прокси:
 ```bash
 curl --socks5 127.0.0.1:1080 ifconfig.co
 ```
+В результате вы увидите IP прокси.
 
-5. Укажите `127.0.0.1:1080` в качестве SOCKS5 прокси в вышем приложении
+5. Укажите `127.0.0.1:1080` в качестве SOCKS5 прокси в вышем приложении, например в конфиге Docker для обхода ограничений на доступ к dockerhub 
+из рф.
